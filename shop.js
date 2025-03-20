@@ -7,6 +7,12 @@ const pageButton3 = document.getElementById("page-button3")
 const arrowButton1 = document.getElementById("arrow-button1")
 const arrowButton2 = document.getElementById("arrow-button2")
 const productCount = document.getElementById("product-count")
+const menus = document.querySelectorAll("#siderbar-menus")
+const menusArrow = document.querySelectorAll(".filter-icon")
+const menusArrow2 = document.querySelectorAll(".filter-icon1")
+const rangeInput = document.querySelectorAll(".range-input input");
+const priceInput = document.querySelectorAll(".price-input input");
+const progress = document.querySelector(".progress");
 
 function goHome() {
     window.location.href = "./index.html"
@@ -20,6 +26,35 @@ function appearAll(num) {
 }
 
 appearAll(1)
+
+fetch("https://api.everrest.educata.dev/shop/products/categories")
+.then(data => data.json())
+.then(data => data.forEach(data => menus[0].innerHTML += menuAppear(data.name)))
+
+function menuAppear(data) {
+  return `<div class="siderbar-menu-options">
+                        <input type="checkbox" id="${data}">
+                        <label for="${data}">${data}</label>
+                    </div>`
+}
+
+function menuClick(num) {
+  menus[num].classList.toggle("show")
+  menusArrow[num].classList.toggle("hidden")
+  menusArrow2[num].classList.toggle("show")
+}
+
+document.addEventListener('click', function(event) {
+  if (!event.target.closest('.filter-option')) {
+    menus.forEach(menu => menu.classList.remove('show'))
+    menusArrow.forEach(arrow => arrow.classList.remove("hidden"))
+    menusArrow2.forEach(arrow => arrow.classList.remove("show"))
+  }
+})
+
+fetch("https://api.everrest.educata.dev/shop/products/brands")
+.then(data => data.json())
+.then(data => data.forEach(data => menus[1].innerHTML += menuAppear(data.split("")[0].toUpperCase()+ data.slice(1))))
 
 function appear(datas) {
     return `<div class="card">
@@ -79,3 +114,54 @@ arrowButton2.addEventListener("click", () => {
   }
 })
 
+const minRange = 0;
+const maxRange = 1000;
+const rangeStep = 10;
+        
+priceInput.forEach(input => {
+input.addEventListener("input", e => {
+                let minVal = parseInt(priceInput[0].value);
+                let maxVal = parseInt(priceInput[1].value);
+                
+                if((maxVal - minVal >= rangeStep) && maxVal <= maxRange) {
+                    if(e.target.className === "input-min") {
+                        rangeInput[0].value = minVal;
+                        updateProgress();
+                    } else {
+                        rangeInput[1].value = maxVal;
+                        updateProgress();
+                    }
+                }
+            });
+        });
+        
+        rangeInput.forEach(input => {
+            input.addEventListener("input", e => {
+                let minVal = parseInt(rangeInput[0].value);
+                let maxVal = parseInt(rangeInput[1].value);
+                
+                if(maxVal - minVal < rangeStep) {
+                    if(e.target.className === "range-min") {
+                        rangeInput[0].value = maxVal - rangeStep;
+                    } else {
+                        rangeInput[1].value = minVal + rangeStep;
+                    }
+                } else {
+                    priceInput[0].value = minVal;
+                    priceInput[1].value = maxVal;
+                    updateProgress();
+    }
+  });
+});
+        
+  function updateProgress() {
+  let minVal = parseInt(rangeInput[0].value);
+  let maxVal = parseInt(rangeInput[1].value);
+            
+  let percent1 = (minVal / maxRange) * 32;
+  let percent2 = (maxVal / maxRange) * 32;
+            
+  progress.style.left = percent1 + "%";
+  progress.style.right = (100 - percent2) + "%";
+}        
+updateProgress();

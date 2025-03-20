@@ -46,30 +46,68 @@
         <aside class="sidebar">
             <h2 class="sidebar-title">Filter by</h2>
             <div class="filter-option">
-                <div class="filter-header">
+                <button class="filter-header" onclick="menuClick(0)">
                     <h3>Category</h3>
                     <span class="filter-icon">+</span>
-                </div>
+                    <span class="filter-icon1">—</span>
+                </button>
+                <div id="siderbar-menus"></div>
             </div>
             <div class="filter-option">
-                <div class="filter-header">
+                <button class="filter-header" onclick="menuClick(1)">
                     <h3>Brand</h3>
                     <span class="filter-icon">+</span>
-                </div>
+                    <span class="filter-icon1">—</span>
+                </button>
+                <div id="siderbar-menus"></div>
             </div>
             <div class="filter-option">
-                <div class="filter-header">
+                <button class="filter-header" onclick="menuClick(2)">
                     <h3>Price</h3>
                     <span class="filter-icon">+</span>
+                    <span class="filter-icon1">—</span>
+                </button>
+                <div id="siderbar-menus">
+                    <div class="price-filter">
+                        <div class="price-input">
+                            <div class="field min">
+                                <label>Min</label>
+                                <input type="number" class="input-min" value="0">
+                            </div>
+                            <div class="field max">
+                                <label>Max</label>
+                                <input type="number" class="input-max" value="1000">
+                            </div>
+                        </div>
+                        
+                        <div class="price-range">
+                            <div class="progress"></div>
+                        </div>
+                        
+                        <div class="range-input">
+                            <input type="range" class="range-min" min="0" max="3000" value="750" step="50">
+                            <input type="range" class="range-max" min="0" max="3000" value="2250" step="50">
+                        </div>
+                        
+                        <button class="apply-btn">Apply Filter</button>
+                    </div>
                 </div>
             </div>
             <div class="filter-option">
-                <div class="filter-header">
+                <button class="filter-header">
                     <h3>Rating</h3>
                     <span class="filter-icon">+</span>
-                </div>
+                    <span class="filter-icon1">—</span>
+                </button>
             </div>
-        </aside>
+            <div class="filter-option" id="Hidden">
+                <button class="filter-header">
+                    <h3>Sort by</h3>
+                    <span class="filter-icon">+</span>
+                    <span class="filter-icon1">—</span>
+                </button>
+            </div>
+            </aside>
         <main class="product-container">
             <div class="product-header">
                 <div>
