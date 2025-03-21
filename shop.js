@@ -1,5 +1,6 @@
 const productsContainer = document.getElementById("products")
 const pagination = document.getElementById("pagination-middle")
+const paginationContainer = document.querySelector(".pagination-container")
 const productsIndicator = document.getElementById("products-indicator")
 const pageButton = document.getElementById("page-button")
 const pageButton2 = document.getElementById("page-button2")
@@ -13,27 +14,78 @@ const menusArrow2 = document.querySelectorAll(".filter-icon1")
 const rangeInput = document.querySelectorAll(".range-input input");
 const priceInput = document.querySelectorAll(".price-input input");
 const progress = document.querySelector(".progress");
+const rangeMin = document.querySelector(".range-min")
+const rangeMax = document.querySelector(".range-max")
 
 function goHome() {
     window.location.href = "./index.html"
 }
 
-function appearAll(num) {
-    productsContainer.innerHTML = ""
-    fetch(`https://api.everrest.educata.dev/shop/products/all?page_index=${num}&page_size=15`)
-    .then(data => data.json())
-    .then(data => data.products.forEach(datas => productsContainer.innerHTML += appear(datas)))
+
+
+function ratingFilter(num) {
+  productsContainer.innerHTML = "";
+  paginationContainer.classList.add("hidden")
+  fetch(`https://api.everrest.educata.dev/shop/products/all?page_index=1&page_size=40`)
+  .then(data => data.json())
+  .then(data => {
+    data.products.filter(data => data.rating >= num).forEach(data => productsContainer.innerHTML += appear(data))
+    productsIndicator.innerHTML = `Showing 1-${data.products.filter(data => data.rating >= num).length} of ${data.products.filter(data => data.rating >= num).length} products`
+    productCount.innerHTML = `${data.products.filter(data => data.rating >= num).length} products`
+  })
+  document.getElementById("all").checked = true
 }
 
-appearAll(1)
+function minMaxPriceFilter() {
+  productsContainer.innerHTML = "";
+  paginationContainer.classList.add("hidden")
+  fetch(`https://api.everrest.educata.dev/shop/products/search?page_index=1&page_size=40&price_min=${rangeMin.value}&price_max=${rangeMax.value}`)
+  .then(data => data.json())
+  .then(data => {
+    data.products.forEach(datas => productsContainer.innerHTML += appear(datas));
+    productsIndicator.innerHTML = `Showing 1-${data.total} of ${data.total} products`
+    productCount.innerHTML = `${data.total} products`
+  })
+  document.getElementById("all").checked = true
+}
+
+function appearAll(num) {
+    productsContainer.innerHTML = ""
+    paginationContainer.classList.remove("hidden")
+    fetch(`https://api.everrest.educata.dev/shop/products/all?page_index=${num}&page_size=15`)
+    .then(data => data.json())
+    .then(data => {
+      data.products.forEach(datas => productsContainer.innerHTML += appear(datas))
+      productsIndicator.innerHTML = `Showing 1-15 of ${data.total} products`
+      productCount.innerHTML = `${data.total} products`
+    })
+}
 
 fetch("https://api.everrest.educata.dev/shop/products/categories")
 .then(data => data.json())
-.then(data => data.forEach(data => menus[0].innerHTML += menuAppear(data.name)))
+.then(data => data.forEach(data => menus[0].innerHTML += menuAppear1(data)))
 
-function menuAppear(data) {
+function categoryAppear(cate,num) {
+  productsContainer.innerHTML = ""
+  paginationContainer.classList.add("hidden")
+  fetch(`https://api.everrest.educata.dev/shop/products/${cate}/${num}?page_index=1&page_size=30`)
+  .then(data => data.json())
+  .then(data => {
+    data.products.forEach(data => productsContainer.innerHTML += appear(data))
+    productsIndicator.innerHTML = `Showing 1-${data.total} of ${data.total} products`
+    productCount.innerHTML = `${data.total} products`
+  })
+}
+
+function menuAppear1(data) {
   return `<div class="siderbar-menu-options">
-                        <input type="checkbox" id="${data}">
+                        <input type="radio" id="${data.name}" name="box2" onclick="categoryAppear('category',${data.id})">
+                        <label for="${data.name}">${data.name}</label>
+                    </div>`
+}
+function menuAppear2(data) {
+  return `<div class="siderbar-menu-options">
+                        <input type="radio" id="${data}" name="box2" onclick="categoryAppear('brand','${data.toLowerCase()}')">
                         <label for="${data}">${data}</label>
                     </div>`
 }
@@ -54,7 +106,7 @@ document.addEventListener('click', function(event) {
 
 fetch("https://api.everrest.educata.dev/shop/products/brands")
 .then(data => data.json())
-.then(data => data.forEach(data => menus[1].innerHTML += menuAppear(data.split("")[0].toUpperCase()+ data.slice(1))))
+.then(data => data.forEach(data => menus[1].innerHTML += menuAppear2(data.split("")[0].toUpperCase()+ data.slice(1))))
 
 function appear(datas) {
     return `<div class="card">
@@ -77,7 +129,7 @@ function appear(datas) {
 
 let nums = 1
 
-function pages(num) {
+function pages( num) {
   nums = num
   appearAll(nums)
   if (num == 1) {
@@ -114,8 +166,8 @@ arrowButton2.addEventListener("click", () => {
   }
 })
 
-const minRange = 0;
-const maxRange = 1000;
+const minRange = 50;
+const maxRange = 8000;
 const rangeStep = 10;
         
 priceInput.forEach(input => {
@@ -158,8 +210,8 @@ input.addEventListener("input", e => {
   let minVal = parseInt(rangeInput[0].value);
   let maxVal = parseInt(rangeInput[1].value);
             
-  let percent1 = (minVal / maxRange) * 32;
-  let percent2 = (maxVal / maxRange) * 32;
+  let percent1 = (minVal / maxRange) * 100;
+  let percent2 = (maxVal / maxRange) * 100;
             
   progress.style.left = percent1 + "%";
   progress.style.right = (100 - percent2) + "%";

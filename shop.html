@@ -51,7 +51,12 @@
                     <span class="filter-icon">+</span>
                     <span class="filter-icon1">—</span>
                 </button>
-                <div id="siderbar-menus"></div>
+                <div id="siderbar-menus">
+                    <div class="siderbar-menu-options">
+                        <input type="radio" id="all" name="box2" checked onclick="appearAll(1)">
+                        <label for="all">All</label>
+                    </div>
+                </div>
             </div>
             <div class="filter-option">
                 <button class="filter-header" onclick="menuClick(1)">
@@ -72,11 +77,11 @@
                         <div class="price-input">
                             <div class="field min">
                                 <label>Min</label>
-                                <input type="number" class="input-min" value="0">
+                                <input type="number" class="input-min" value="750" min="0" max="8000">
                             </div>
                             <div class="field max">
                                 <label>Max</label>
-                                <input type="number" class="input-max" value="1000">
+                                <input type="number" class="input-max" value="6250" min="0" max="8000">
                             </div>
                         </div>
                         
@@ -85,27 +90,75 @@
                         </div>
                         
                         <div class="range-input">
-                            <input type="range" class="range-min" min="0" max="3000" value="750" step="50">
-                            <input type="range" class="range-max" min="0" max="3000" value="2250" step="50">
+                            <input type="range" class="range-min" min="50" max="8000" value="750" step="50">
+                            <input type="range" class="range-max" min="50" max="8000" value="6250" step="50">
                         </div>
                         
-                        <button class="apply-btn">Apply Filter</button>
+                        <button class="apply-btn" onclick="minMaxPriceFilter()">Apply Filter</button>
                     </div>
                 </div>
             </div>
             <div class="filter-option">
-                <button class="filter-header">
+                <button class="filter-header" onclick="menuClick(3)">
                     <h3>Rating</h3>
                     <span class="filter-icon">+</span>
                     <span class="filter-icon1">—</span>
                 </button>
+                <div id="siderbar-menus">
+                    <div class="rating-container">
+                        <input type="radio" id="rating-radio1" name="box" checked  onclick="appearAll(1)">
+                        <label for="rating-radio1">select all</label>
+                    </div>
+                    <div class="rating-container">
+                        <input type="radio" id="rating-radio2" name="box" onclick="ratingFilter(5)">
+                        <label for="rating-radio2">5 only</label>
+                    </div>
+                    <div class="rating-container">
+                        <input type="radio" id="rating-radio3" name="box" onclick="ratingFilter(4)">
+                        <label for="rating-radio3">4 and up</label>
+                    </div>
+                    <div class="rating-container">
+                        <input type="radio" id="rating-radio4" name="box" onclick="ratingFilter(3)">
+                        <label for="rating-radio4">3 and up</label>
+                    </div>
+                    <div class="rating-container">
+                        <input type="radio" id="rating-radio5" name="box" onclick="ratingFilter(2)">
+                        <label for="rating-radio5">2 and up</label>
+                    </div>
+                    <div class="rating-container">
+                        <input type="radio" id="rating-radio6" name="box" onclick="ratingFilter(1)">
+                        <label for="rating-radio6">1 and up</label>
+                    </div>
+                </div>
             </div>
             <div class="filter-option" id="Hidden">
-                <button class="filter-header">
+                <button class="filter-header" onclick="menuClick(4)">
                     <h3>Sort by</h3>
                     <span class="filter-icon">+</span>
                     <span class="filter-icon1">—</span>
                 </button>
+                <div id="siderbar-menus">
+                    <div class="rating-container">
+                        <input type="radio" id="sortBy-radio1" name="box1" checked>
+                        <label for="sortBy-radio1">Recommended</label>
+                    </div>
+                    <div class="rating-container">
+                        <input type="radio" id="sortBy-radio2" name="box1">
+                        <label for="sortBy-radio2">Price (Low to High)</label>
+                    </div>
+                    <div class="rating-container">
+                        <input type="radio" id="sortBy-radio3" name="box1">
+                        <label for="sortBy-radio3">Price (High to Low)</label>
+                    </div>
+                    <div class="rating-container">
+                        <input type="radio" id="sortBy-radio4" name="box1">
+                        <label for="sortBy-radio4">Name A-Z</label>
+                    </div>
+                    <div class="rating-container">
+                        <input type="radio" id="sortBy-radio5" name="box1">
+                        <label for="sortBy-radio5">Name Z-A</label>
+                    </div>
+                </div>
             </div>
             </aside>
         <main class="product-container">
@@ -135,8 +188,9 @@
                   </button>
                   <div id="pagination-middle">
                     <button id="page-button"  onclick="pages(1)">1</button>
-                    <button id="page-button2" onclick="pages(2)">2</button>
-                    <button id="page-button3" onclick="pages(3)">3</button>
+                    <button id="page-button2"  onclick="pages(2)">2</button>
+                    <button id="page-button3"  onclick="pages(3)">3</button>
+                    
                   </div>
                   <button id="arrow-button2">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">

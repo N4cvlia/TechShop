@@ -606,7 +606,9 @@ body {
     margin-top: 40px;
     width: 100%;
   }
-  
+  .pagination-container.hidden {
+    display: none;
+  }
   .pagination {
     display: flex;
     align-items: center;
@@ -816,6 +818,13 @@ body {
 .apply-btn:hover {
     background-color: #ffffff;
     color: black;
+}
+.rating-container {
+    margin: 7px 0px;
+}
+.rating-container label {
+    font-family: Avenir;
+    margin-left: 3px;
 }
 @media (max-width: 600px) {
     .pagination {
