@@ -216,7 +216,7 @@ body {
     background-color: white;
     width: 95%;
     margin: 30px 0px;
-    justify-self: center;
+    margin-left: 2.5%;
     justify-content: space-around;
 }
 .section2-box svg{
@@ -973,5 +973,6 @@ body {
     }
     .section2 {
         width: 100%;
+        margin-left: 0%;
     }
 }

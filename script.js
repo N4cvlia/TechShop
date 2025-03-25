@@ -12,3 +12,6 @@ setInterval(() => {
 function goToShop() {
     window.location.href = "./shop.html"
 }
+function login() {
+    window.location.href = "./logIn.html"
+}

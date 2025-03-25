@@ -1,0 +1,280 @@
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+@font-face {
+    font-family: 'Avenir';
+    src: url('avenir-lt-pro-cufonfonts/AvenirLTProHeavy.otf') format('otf');
+    font-weight: normal;
+    font-style: normal;
+}
+.ReleaseDate,
+.Brand {
+    font-size: 16px;
+    font-family: Avenir;
+    font-weight: 600;
+}
+#releaseDate,
+#brand {
+    font-weight: 100;
+}
+.product-wrapper {
+    max-width: 1100px;
+    width: 100%;
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    overflow: hidden;
+    margin: 10px auto 30px auto;
+}
+.product-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+.product-image-section {
+    flex: 1;
+    position: relative;
+    min-height: 500px;
+}
+.product-image-gradient {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.image-navigation {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
+    z-index: 10;
+}
+.nav-arrow {
+    background-color: rgba(255,255,255,0.7);
+    color: #8A2BE2;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.nav-arrow:hover {
+    background-color: rgba(255,255,255,0.9);
+}
+.product-details {
+    flex: 1;
+    padding: 40px;
+    position: relative;
+}
+.product-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.product-title {
+    font-size: 28px;
+    color: #333;
+    font-family: Avenir;
+    font-weight: 1000;
+}
+.rating-container {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+}
+.rating-stars {
+    color: #FFD700;
+    margin-right: 10px;
+    display: flex;
+}
+.rating-button {
+    background-color: #8A2BE2;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.rating-button:hover {
+    background-color: #6A1B9A;
+}
+.price-stock-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 30px 0px;
+}
+.price {
+    font-size: 28px;
+    font-weight: bold;
+    color: black;
+    font-family: Avenir;
+}
+#productImg {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+.stock-info {
+    display: flex;
+    align-items: center;
+    font-family: Avenir;
+    font-weight: 600;
+    font-size: 14px;
+    color: #4CAF50;
+    gap: 5px;
+}
+.stock-icon {
+    margin-right: 5px;
+    color: #4CAF50;
+}
+.releaseBrand {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 15px;
+}
+.quantity-container {
+    display: flex;
+    align-items: center;
+    margin: 20px 0px 50px 0px;
+}
+.quantity-label {
+    margin-right: 15px;
+    font-weight: bold;
+    font-family: Avenir;
+}
+.quantity-control {
+    display: flex;
+    align-items: center;
+    border: 1px solid #000000;
+    overflow: hidden;
+}
+.quantity-button {
+    background-color: #ffffff;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.quantity-button:hover {
+    background-color: #e0e0e0;
+}
+.quantity-input {
+    width: 50px;
+    text-align: center;
+    border: none;
+    padding: 10px;
+}
+.action-buttons {
+    display: flex;
+    gap: 15px;
+}
+.add-to-cart {
+    flex-grow: 1;
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.5s ease;
+    font-family: Avenir;
+    font-size: 15px;
+    font-weight: 600;
+    border: 2px solid black;
+}
+.add-to-cart:hover {
+    background-color: white;
+    color: black;
+}
+.favorite-button {
+    background-color: transparent;
+    border: 2px solid #000000;
+    color: #000000;
+    padding: 12px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.favorite-button:hover {
+    background-color: #000000;
+    color: rgb(255, 255, 255);
+}
+.product-info-section {
+    padding: 40px;
+    background-color: #f9f9f9;
+}
+.product-info-title {
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: #333;
+}
+.product-info-content {
+    line-height: 1.6;
+    color: #666;
+}
+.breadcrumb {
+    color: #666;
+    font-size: 14px;
+    margin-top: 88px;
+}
+.breadcrumb a {
+    color: #333;
+    text-decoration: none;
+    transition: 0.3s color;
+    font-family: Avenir;
+    font-size: 15px;
+}
+.breadcrumb a:hover {
+    color: #333333c3;
+}
+.breadcrumb span {
+    margin: 0 5px;
+    color: #999;
+    font-family: Avenir;
+    font-size: 15px;
+}
+@media screen and (max-width: 1100px) {
+    .product-container {
+        flex-direction: column;
+    }
+    .product-wrapper {
+        width: 70%;
+    }
+}
+@media screen and (max-width: 641px) {
+    .breadcrumb {
+        margin-top: 155px;
+    }
+    .product-wrapper {
+        width: 90%;
+    }
+}
+@media screen and (max-width: 490px) {
+    .hate {
+        display: none;
+    }
+    .product-title {
+        font-size: 25px;
+    }
+    .product-wrapper {
+        width: 100%;
+        border-radius: 0px;
+    }
+    .product-details {
+        padding: 40px 20px;
+    }
+}

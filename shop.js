@@ -16,13 +16,20 @@ const priceInput = document.querySelectorAll(".price-input input");
 const progress = document.querySelector(".progress");
 const rangeMin = document.querySelector(".range-min")
 const rangeMax = document.querySelector(".range-max")
+const sortBy1 = document.getElementById("sortBy1")
+const allButton = document.getElementById("allButton")
 
 function goHome() {
     window.location.href = "./index.html"
 }
 
+let allBoolean = true;
 
-
+function allClick() {
+  appearAll(1)
+  allBoolean = true
+}
+  
 function ratingFilter(num) {
   productsContainer.innerHTML = "";
   paginationContainer.classList.add("hidden")
@@ -33,12 +40,18 @@ function ratingFilter(num) {
     productsIndicator.innerHTML = `Showing 1-${data.products.filter(data => data.rating >= num).length} of ${data.products.filter(data => data.rating >= num).length} products`
     productCount.innerHTML = `${data.products.filter(data => data.rating >= num).length} products`
   })
-  document.getElementById("all").checked = true
+  document.getElementById("allButton").checked = true
+}
+
+function resetRating() {
+  document.getElementById("rating-radio1").checked = true
 }
 
 function minMaxPriceFilter() {
   productsContainer.innerHTML = "";
   paginationContainer.classList.add("hidden")
+  chosenCategoryNum = 0;
+  allBoolean = true;
   fetch(`https://api.everrest.educata.dev/shop/products/search?page_index=1&page_size=40&price_min=${rangeMin.value}&price_max=${rangeMax.value}`)
   .then(data => data.json())
   .then(data => {
@@ -46,7 +59,7 @@ function minMaxPriceFilter() {
     productsIndicator.innerHTML = `Showing 1-${data.total} of ${data.total} products`
     productCount.innerHTML = `${data.total} products`
   })
-  document.getElementById("all").checked = true
+  document.getElementById("allButton").checked = true
 }
 
 function appearAll(num) {
@@ -61,13 +74,24 @@ function appearAll(num) {
     })
 }
 
+
+fetch("https://api.everrest.educata.dev/shop/products/all?page_index=1&page_size=15")
+.then(data => data.json())
+.then(data => console.log(data))
+
 fetch("https://api.everrest.educata.dev/shop/products/categories")
 .then(data => data.json())
 .then(data => data.forEach(data => menus[0].innerHTML += menuAppear1(data)))
 
+let chosenCategoryNum;
+let chosenCategory;
+
 function categoryAppear(cate,num) {
   productsContainer.innerHTML = ""
   paginationContainer.classList.add("hidden")
+  chosenCategoryNum = num
+  chosenCategory = cate
+  allBoolean = false;
   fetch(`https://api.everrest.educata.dev/shop/products/${cate}/${num}?page_index=1&page_size=30`)
   .then(data => data.json())
   .then(data => {
@@ -77,15 +101,17 @@ function categoryAppear(cate,num) {
   })
 }
 
+
+
 function menuAppear1(data) {
   return `<div class="siderbar-menu-options">
-                        <input type="radio" id="${data.name}" name="box2" onclick="categoryAppear('category',${data.id})">
+                        <input type="radio" id="${data.name}" name="box2" onclick="categoryAppear('category',${data.id}); resetSortBy(); resetRating()">
                         <label for="${data.name}">${data.name}</label>
                     </div>`
 }
 function menuAppear2(data) {
   return `<div class="siderbar-menu-options">
-                        <input type="radio" id="${data}" name="box2" onclick="categoryAppear('brand','${data.toLowerCase()}')">
+                        <input type="radio" id="${data}" name="box2" onclick="categoryAppear('brand','${data.toLowerCase()}'); resetSortBy(); resetRating()">
                         <label for="${data}">${data}</label>
                     </div>`
 }
@@ -110,21 +136,49 @@ fetch("https://api.everrest.educata.dev/shop/products/brands")
 
 function appear(datas) {
     return `<div class="card">
-                    <div class="image-container">
+                    <div class="image-container" onclick="goToPage('${datas._id}')">
                       <img src="${datas.thumbnail}" alt="Modern Laptop" referrerpolicy="no-referrer">
                     </div>
                     <div class="content">
-                      <div class="name">${datas.title}</div>
-                      <div class="price-rating">
+                      <div class="name" onclick="goToPage('${datas._id}')">${datas.title}</div>
+                      <div class="price-rating" onclick="goToPage('${datas._id}')">
                         <div class="price">${datas.price.current}$</div>
                         <div class="rating">
                           <div id="stars" style="max-width: ${(Math.floor(datas.rating *10)/10) * 15 + (Math.floor(datas.rating *10)/10) * 2.7}px">★★★★★</div>
                           <div class="reviews">${Math.floor(datas.rating *10)/10}</div>
                         </div>
                       </div>
-                      <button class="add-button">ADD TO CART</button>
+                      <button class="add-button" onclick="addToCart('${datas._id}')">ADD TO CART</button>
                     </div>
                 </div>`
+}
+
+function goToPage(id) {
+  window.location.href = "./productPage.html"
+  sessionStorage.setItem("Product-Id", id)
+  console.log(id)
+}
+
+function addToCart(id) {
+  let stuff ={
+      id: `${id}`,
+      quantity: 1
+    };
+  fetch("https://api.everrest.educata.dev/shop/cart/product", {
+    method: "POST",
+    headers: {
+      accept: "application/json",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(stuff)
+  })
+  .then(res => res.json())
+  .then(data => console.log(data))
+  console.log(stuff)
+}
+
+function login() {
+  window.location.href = "./logIn.html"
 }
 
 let nums = 1
@@ -217,3 +271,73 @@ input.addEventListener("input", e => {
   progress.style.right = (100 - percent2) + "%";
 }        
 updateProgress();
+
+function appearSortBy(sortBy, direction) {
+  productsContainer.innerHTML = ""
+  fetch(`https://api.everrest.educata.dev/shop/products/search?page_index=1&page_size=40&category_id=${chosenCategoryNum > 0 ? chosenCategoryNum : ""}&sort_by=${sortBy}&sort_direction=${direction}`)
+  .then(res => res.json())
+  .then(data => {
+    data.products.forEach(data => productsContainer.innerHTML += appear(data))
+    productsIndicator.innerHTML = `Showing 1-${data.total} of ${data.total} products`
+    productCount.innerHTML = `${data.total} products`
+  })
+  
+}
+
+
+sortBy1.addEventListener("change", (e) => {
+  switch(e.target.value) {
+    case 'option1':
+      if (allBoolean) {
+        chosenCategoryNum = 0;
+        appearSortBy("price", "asc")
+        paginationContainer.classList.add("hidden")
+      }else {
+        appearSortBy("price", "asc")
+        paginationContainer.classList.add("hidden")
+      }
+      break;
+    case "option2":
+      if (allBoolean) {
+        chosenCategoryNum = 0;
+        appearSortBy("price", "desc")
+        paginationContainer.classList.add("hidden")
+      }else {
+        appearSortBy("price", "desc")
+        paginationContainer.classList.add("hidden")
+      }
+      break;
+    case "option3":
+      if (allBoolean) {
+        chosenCategoryNum = 0;
+        appearSortBy("title", "asc")
+        paginationContainer.classList.add("hidden")
+      }else {
+        appearSortBy("title", "asc")
+        paginationContainer.classList.add("hidden")
+      }
+      break;
+    case "option4":
+      if (allBoolean) {
+        chosenCategoryNum = 0;
+        appearSortBy("title", "desc")
+        paginationContainer.classList.add("hidden")
+      }else {
+        appearSortBy("title", "desc")
+        paginationContainer.classList.add("hidden")
+      }
+      break;
+    default:
+      if(allBoolean) {
+        appearAll(1)
+        paginationContainer.classList.remove("hidden")
+      }else {
+        categoryAppear(chosenCategory,chosenCategoryNum)
+        paginationContainer.classList.add("hidden")
+      } 
+  }
+})
+
+function resetSortBy() {
+  sortBy1.selectedIndex = 0 
+}

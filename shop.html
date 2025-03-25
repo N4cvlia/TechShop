@@ -20,7 +20,7 @@
             </button>
         </div>
         <div class="nav-actions">
-            <button class="nav-button">
+            <button class="nav-button" onclick="login()">
                 <svg class="user-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                     <circle cx="12" cy="7" r="4"></circle>
@@ -53,8 +53,8 @@
                 </button>
                 <div id="siderbar-menus">
                     <div class="siderbar-menu-options">
-                        <input type="radio" id="all" name="box2" checked onclick="appearAll(1)">
-                        <label for="all">All</label>
+                        <input type="radio" id="allButton" name="box2" checked onclick="allClick(); resetSortBy();resetRating()">
+                        <label for="allButton">All</label>
                     </div>
                 </div>
             </div>
@@ -94,7 +94,7 @@
                             <input type="range" class="range-max" min="50" max="8000" value="6250" step="50">
                         </div>
                         
-                        <button class="apply-btn" onclick="minMaxPriceFilter()">Apply Filter</button>
+                        <button class="apply-btn" onclick="minMaxPriceFilter(); resetSortBy(); resetRating()">Apply Filter</button>
                     </div>
                 </div>
             </div>
@@ -106,27 +106,27 @@
                 </button>
                 <div id="siderbar-menus">
                     <div class="rating-container">
-                        <input type="radio" id="rating-radio1" name="box" checked  onclick="appearAll(1)">
+                        <input type="radio" id="rating-radio1" name="box" checked  onclick="appearAll(1); resetSortBy()">
                         <label for="rating-radio1">select all</label>
                     </div>
                     <div class="rating-container">
-                        <input type="radio" id="rating-radio2" name="box" onclick="ratingFilter(5)">
+                        <input type="radio" id="rating-radio2" name="box" onclick="ratingFilter(5); resetSortBy()">
                         <label for="rating-radio2">5 only</label>
                     </div>
                     <div class="rating-container">
-                        <input type="radio" id="rating-radio3" name="box" onclick="ratingFilter(4)">
+                        <input type="radio" id="rating-radio3" name="box" onclick="ratingFilter(4); resetSortBy()">
                         <label for="rating-radio3">4 and up</label>
                     </div>
                     <div class="rating-container">
-                        <input type="radio" id="rating-radio4" name="box" onclick="ratingFilter(3)">
+                        <input type="radio" id="rating-radio4" name="box" onclick="ratingFilter(3); resetSortBy()">
                         <label for="rating-radio4">3 and up</label>
                     </div>
                     <div class="rating-container">
-                        <input type="radio" id="rating-radio5" name="box" onclick="ratingFilter(2)">
+                        <input type="radio" id="rating-radio5" name="box" onclick="ratingFilter(2); resetSortBy()">
                         <label for="rating-radio5">2 and up</label>
                     </div>
                     <div class="rating-container">
-                        <input type="radio" id="rating-radio6" name="box" onclick="ratingFilter(1)">
+                        <input type="radio" id="rating-radio6" name="box" onclick="ratingFilter(1); resetSortBy()">
                         <label for="rating-radio6">1 and up</label>
                     </div>
                 </div>
@@ -168,13 +168,13 @@
                     <p id="product-count"></p>
                 </div>
                 <div class="sort-options">
-                    <label for="sort">Sort by: </label>
-                    <select id="sort" name="sort">
+                    <label for="sortBy1">Sort by: </label>
+                    <select id="sortBy1" name="sort">
                         <option value="recommended">Recommended</option>
-                        <option value="price-low">Price (Low to High)</option>
-                        <option value="price-high">Price (High to Low)</option>
-                        <option value="nameAZ">Name A-Z</option>
-                        <option value="nameZA">Name Z-A</option>
+                        <option value="option1">Price (Low to High)</option>
+                        <option value="option2">Price (High to Low)</option>
+                        <option value="option3">Name A-Z</option>
+                        <option value="option4">Name Z-A</option>
                     </select>
                 </div>
             </div>
