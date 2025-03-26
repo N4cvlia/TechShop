@@ -826,6 +826,205 @@ body {
     font-family: Avenir;
     margin-left: 3px;
 }
+.login-container {
+    width: 100%;
+    max-width: 400px;
+    background-color: white;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin: 200px auto;
+}
+
+.login-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-family: Avenir;
+    font-weight: 600;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-family: Avenir;
+    font-weight: 500;
+    font-size: 17px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.login-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: Avenir;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.login-btn:hover {
+    opacity: 0.9;
+}
+
+.form-footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+    font-size: 0.9em;
+}
+
+.form-footer a {
+    color: black;
+    text-decoration: none;
+    font-family: Avenir;
+    font-weight: 500;
+}
+
+.form-footer a:hover {
+    text-decoration: underline;
+}
+.register-page-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px 0;
+}
+
+.register-container {
+    width: 100%;
+    max-width: 500px;
+    background-color: white;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin: 120px auto 60px auto;
+}
+
+.register-title {
+    text-align: center;
+    margin-bottom: 20px;
+    font-family: Avenir;
+    font-weight: 700;
+}
+
+.register-form-group {
+    margin-bottom: 15px;
+}
+
+.register-form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-family: Avenir;
+    font-weight: 500;
+}
+
+.register-form-group input,
+.register-form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.register-name-group {
+    display: flex;
+    gap: 15px;
+}
+
+.register-name-group .register-form-group {
+    flex: 1;
+}
+
+.register-submit-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 15px;
+    font-family: Avenir;
+    font-weight: 500;
+    font-size: 18px;
+}
+.eror {
+    margin: 10px auto;
+    display: flex;
+}
+.errorss {
+    display: flex;
+}
+#errors {
+    color: red;
+    font-family: Avenir;
+}
+#errorss {
+    text-align: center;
+    width: 100%;
+}
+.errors {
+    justify-self: center;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 5px;
+}
+.verify {
+    margin-top: 10px;
+    font-family: Avenir;
+    font-weight: 600;
+    font-size: 20px;
+    color: rgb(159, 249, 25);
+}
+.register-submit-btn:hover {
+    opacity: 0.9;
+}
+
+.register-form-footer {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 0.9em;
+}
+
+.register-form-footer a {
+    color: black;
+    text-decoration: none;
+}
+
+.register-form-footer a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+    .login-container {
+        width: 90%;
+        margin: 20px;
+    }
+    .register-container {
+        width: 90%;
+        padding: 20px;
+    }
+
+    .register-name-group {
+        flex-direction: column;
+        gap: 15px;
+    }
+}
 @media (max-width: 600px) {
     .pagination {
       padding: 10px;
@@ -946,6 +1145,12 @@ body {
     .breadcrumb {
         margin-top: 150px;
     }
+    .register-container {
+        margin-top: 180px;
+    }
+    .login-container {
+        margin: 220px auto 80px auto;
+    }
 }
 @media screen and (max-width: 477px) {
     .section2-box {
@@ -974,5 +1179,17 @@ body {
     .section2 {
         width: 100%;
         margin-left: 0%;
+    }
+    .register-container {
+        width: 100%;
+        margin-left: 0px;
+        margin-right: 0px;
+        border-radius: 0px;
+    }
+    .login-container {
+        margin-left: 0px;
+        margin-right: 0px;
+        width: 100%;
+        border-radius: 0px;
     }
 }

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Log in</title>
+    <title>Register</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://kit.fontawesome.com/909479a55e.js" crossorigin="anonymous"></script>
 </head>
@@ -38,24 +38,74 @@
             </button>
         </div>
     </nav>
-    <div class="login-container">
-        <h2>Log In to Your Account</h2>
-        <form onsubmit="login(event)">
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" placeholder="Bendover@gmail.com" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" placeholder="Enter your password" required>
-            </div>
-            <button type="submit" class="login-btn">Log in</button>
-            <div class="form-footer">
-                <a href="#" onclick="goToRegister()">Create an account</a>
-                <a href="#">Forgot password?</a>
-            </div>
-            <div class="eror"><div id="errorss"></div></div>
-        </form>
+    <div class="register-page-body">
+        <div class="register-container">
+            <h2 class="register-title">Create Your Account</h2>
+            <form onsubmit="register(event)">
+                <div class="register-name-group">
+                    <div class="register-form-group">
+                        <label for="firstName">First Name</label>
+                        <input type="text" id="firstName" name="firstName" placeholder="Enter first name" required>
+                    </div>
+                    <div class="register-form-group">
+                        <label for="lastName">Last Name</label>
+                        <input type="text" id="lastName" name="lastName" placeholder="Enter last name" required>
+                    </div>
+                </div>
+    
+                <div class="register-form-group">
+                    <label for="age">Age</label>
+                    <input type="number" id="age" name="age" placeholder="Enter your age" required>
+                </div>
+    
+                <div class="register-form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                </div>
+    
+                <div class="register-form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Create a password" required>
+                </div>
+    
+                <div class="register-form-group">
+                    <label for="address">Address</label>
+                    <input type="text" id="address" name="address" placeholder="Enter your address" required>
+                </div>
+    
+                <div class="register-form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" value="+995 " placeholder="Enter your phone number" required>
+                </div>
+    
+                <div class="register-form-group">
+                    <label for="zipcode">Zip Code</label>
+                    <input type="text" id="zipcode" name="zipcode" placeholder="Enter your zip code" required>
+                </div>
+    
+                <div class="register-form-group">
+                    <label for="avatar">Profile Picture</label>
+                    <input type="text" id="avatar" name="avatar" placeholder="Enter image link">
+                </div>
+    
+                <div class="register-form-group">
+                    <label for="gender">Gender</label>
+                    <select id="gender" name="gender" required>
+                        <option value="" selected disabled>Select Gender</option>
+                        <option value="MALE">Male</option>
+                        <option value="FEMALE">Female</option>
+                        <option value="OTHER">Other</option>
+                    </select>
+                </div>
+    
+                <button type="submit" class="register-submit-btn">Register</button>
+    
+                <div class="register-form-footer">
+                    <a href="#" onclick="goToLogin()">Already have an account? Log in</a>
+                </div>
+                <div class="errors" id="errorss"></div>
+            </form>
+        </div>
     </div>
     <footer class="footer">
         <div class="footer-content">
@@ -117,7 +167,6 @@
     <div class="copyright">
         © 2035 by TechShop. Powered and secured by Nacvlia
     </div>
-    <script src="login.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
+    <script src="register.js"></script>
 </body>
 </html>

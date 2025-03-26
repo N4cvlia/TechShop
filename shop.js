@@ -18,6 +18,7 @@ const rangeMin = document.querySelector(".range-min")
 const rangeMax = document.querySelector(".range-max")
 const sortBy1 = document.getElementById("sortBy1")
 const allButton = document.getElementById("allButton")
+let userKey = Cookies.get("user");
 
 function goHome() {
     window.location.href = "./index.html"
@@ -159,22 +160,41 @@ function goToPage(id) {
   console.log(id)
 }
 
+let hastCart = false;
+
 function addToCart(id) {
-  let stuff ={
-      id: `${id}`,
-      quantity: 1
-    };
+  let cardInfo = {
+    id: id,
+    quantity: 1,
+  };
+
+fetch("https://api.everrest.educata.dev/auth", {
+method: "GET",
+headers: {
+  accept: "application/json",
+  Authorization: `Bearer ${userKey}`,
+},
+})
+.then((res) => res.json())
+.then((data) => {
+    (data.cartID ? (hastCart = true) : hastCart = false)
+    addCartLogic(cardInfo)
+} );
+}
+
+function addCartLogic(cardInfo) {
   fetch("https://api.everrest.educata.dev/shop/cart/product", {
-    method: "POST",
-    headers: {
-      accept: "application/json",
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(stuff)
-  })
-  .then(res => res.json())
-  .then(data => console.log(data))
-  console.log(stuff)
+      method: `${hastCart ? "PATCH" : "POST"}`,
+      headers: {
+          accept: "application/json",
+          Authorization: `Bearer ${userKey}`,
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(cardInfo)
+    })
+    .then(res => res.json())
+    .then(data => console.log(data))
+    ;
 }
 
 function login() {
