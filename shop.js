@@ -19,6 +19,47 @@ const rangeMax = document.querySelector(".range-max")
 const sortBy1 = document.getElementById("sortBy1")
 const allButton = document.getElementById("allButton")
 let userKey = Cookies.get("user");
+let cartNum = document.getElementById("cartNum")
+let loginIcon = document.getElementById('loginIcon')
+
+function loginUpdate() {
+  if(userKey) {
+    loginIcon.classList.add("hidden")
+    document.getElementById("loginImage").classList.remove("hidden")
+    fetch(`https://api.everrest.educata.dev/auth`, {
+      method: "GET",
+      headers: {
+        accept: 'application/json',
+        Authorization: `Bearer ${userKey}`
+      }
+    })
+    .then(res => res.json())
+    .then(data => document.getElementById("loginImage").src = data.avatar)
+  } else {
+    document.getElementById("loginImage").classList.add("hidden")
+    loginIcon.classList.remove("hidden")
+  }
+}
+
+loginUpdate()
+
+function cartUpdate() {
+  if(userKey) {
+    fetch("https://api.everrest.educata.dev/shop/cart", {
+      method: "GET",
+      headers: {
+        accept: 'application/json',
+        Authorization: `Bearer ${userKey}`
+      }
+    })
+      .then(res => res.json())
+      .then(data => cartNum.innerText = data.products.length)
+  }else {
+    cartNum.innerText = 0
+  }
+}
+
+cartUpdate()
 
 function goHome() {
     window.location.href = "./index.html"
@@ -74,11 +115,6 @@ function appearAll(num) {
       productCount.innerHTML = `${data.total} products`
     })
 }
-
-
-fetch("https://api.everrest.educata.dev/shop/products/all?page_index=1&page_size=15")
-.then(data => data.json())
-.then(data => console.log(data))
 
 fetch("https://api.everrest.educata.dev/shop/products/categories")
 .then(data => data.json())
@@ -150,6 +186,8 @@ function appear(datas) {
                         </div>
                       </div>
                       <button class="add-button" onclick="addToCart('${datas._id}')">ADD TO CART</button>
+                      <span id="noStock${datas._id}" class="Hidden noStock">No stock</span>
+                      <span id="yesStock${datas._id}" class="Hidden yesStock">Added to cart</span>
                     </div>
                 </div>`
 }
@@ -163,38 +201,64 @@ function goToPage(id) {
 let hastCart = false;
 
 function addToCart(id) {
-  let cardInfo = {
-    id: id,
-    quantity: 1,
-  };
-
-fetch("https://api.everrest.educata.dev/auth", {
-method: "GET",
-headers: {
-  accept: "application/json",
-  Authorization: `Bearer ${userKey}`,
-},
-})
-.then((res) => res.json())
-.then((data) => {
-    (data.cartID ? (hastCart = true) : hastCart = false)
-    addCartLogic(cardInfo)
-} );
+  if(userKey) {
+    let cardInfo = {
+      id: id,
+      quantity: 1,
+    };
+    fetch("https://api.everrest.educata.dev/auth", {
+    method: "GET",
+    headers: {
+      accept: "application/json",
+      Authorization: `Bearer ${userKey}`,
+    },
+    })
+    .then((res) => res.json())
+    .then((data) => {
+        (data.cartID ? (hastCart = true) : hastCart = false)
+        addCartLogic(cardInfo)
+    } );
+  }else {
+    alert("Please log in first to add items to your cart.")
+  }
 }
 
+const noStock = document.querySelectorAll("noStock")
+const yesStock = document.querySelectorAll("yesStock")
+
 function addCartLogic(cardInfo) {
-  fetch("https://api.everrest.educata.dev/shop/cart/product", {
-      method: `${hastCart ? "PATCH" : "POST"}`,
-      headers: {
-          accept: "application/json",
-          Authorization: `Bearer ${userKey}`,
-          'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(cardInfo)
-    })
-    .then(res => res.json())
-    .then(data => console.log(data))
-    ;
+  fetch(`https://api.everrest.educata.dev/shop/products/id/${cardInfo.id}`)
+  .then(res => res.json())
+  .then(data => {
+    if(data.stock > 0) {
+      fetch("https://api.everrest.educata.dev/shop/cart/product", {
+        method: `${hastCart ? "PATCH" : "POST"}`,
+        headers: {
+            accept: "application/json",
+            Authorization: `Bearer ${userKey}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(cardInfo)
+      })
+      .then(res => res.json())
+      .then(data => console.log(data))
+      .catch(err => console.log(err))
+      let stock = `yesStock${cardInfo.id}`
+        document.getElementById(`${stock}`).classList.remove("Hidden")
+          setTimeout(() => {
+            document.getElementById(`${stock}`).classList.add("Hidden")
+          }, 3000);
+      setTimeout(() => {
+        cartUpdate()
+      }, 1000);
+    }else {
+      let stock = `noStock${cardInfo.id}`
+        document.getElementById(`${stock}`).classList.remove("Hidden")
+        setTimeout(() => {
+          document.getElementById(`${stock}`).classList.add("Hidden")
+        }, 2500);
+    }
+  })
 }
 
 function login() {

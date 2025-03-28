@@ -33,7 +33,7 @@ function login(e) {
             setInterval(() => {
                 errors.innerHTML = ""
                 window.location.href = "./shop.html"
-            }, 10000);
+            }, 3500);
             e.target.reset()
             Cookies.set("user", data.access_token)
         }

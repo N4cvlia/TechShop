@@ -20,7 +20,7 @@
             </button>
         </div>
         <div class="nav-actions">
-            <button class="nav-button" onclick="login()">
+            <button class="nav-button" onclick="login()" id="loginIcon">
                 <svg class="user-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                     <circle cx="12" cy="7" r="4"></circle>
@@ -28,12 +28,15 @@
                 <span>Log In</span>
             </button>
             <button class="nav-button">
+                <img src="https://www.ledr.com/colours/white.jpg" alt="" id="loginImage" class="user-icon hidden" style="border-radius: 50%; height: 30px; width: 30px;">
+            </button>
+            <button class="nav-button">
                 <svg class="cart-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="9" cy="21" r="1"></circle>
                     <circle cx="20" cy="21" r="1"></circle>
                     <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
                 </svg>
-                <span class="cart-badge">0</span>
+                <span class="cart-badge" id="cartNum">0</span>
             </button>
         </div>
     </nav>
@@ -42,6 +45,7 @@
         <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24" aria-hidden="true" class="sL_GJTQ"><path fill-rule="evenodd" d="M8.70710678,4.99810828 L15.068,11.3651083 L15.0722115,11.3620693 L15.7793183,12.0691761 L15.776,12.0721083 L15.7782433,12.0758831 L15.0711365,12.7829899 L15.069,12.7801083 L8.70710678,19.1434929 L8,18.4363861 L14.361,12.0721083 L8,5.70521506 L8.70710678,4.99810828 Z"></path></svg>
         <span href="#" aria-current="page" style="font-family: Avenir;">All Products</span>
     </div>
+    <div id="love"></div>
     <div class="content-container">
         <aside class="sidebar">
             <h2 class="sidebar-title">Filter by</h2>

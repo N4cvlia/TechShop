@@ -11,6 +11,48 @@ const rating = document.getElementById("rating")
 const productInfo = document.getElementById("product-info-content")
 const stockInfo = document.getElementById("stock-info")
 const quantityInput = document.getElementById("quantity-input")
+let userKey = Cookies.get("user");
+let cartNum = document.getElementById("cartNum")
+let loginIcon = document.getElementById('loginIcon')
+
+function loginUpdate() {
+    if(userKey) {
+      loginIcon.classList.add("hidden")
+      document.getElementById("loginImage").classList.remove("hidden")
+      fetch(`https://api.everrest.educata.dev/auth`, {
+        method: "GET",
+        headers: {
+          accept: 'application/json',
+          Authorization: `Bearer ${userKey}`
+        }
+      })
+      .then(res => res.json())
+      .then(data => document.getElementById("loginImage").src = data.avatar)
+    } else {
+      document.getElementById("loginImage").classList.add("hidden")
+      loginIcon.classList.remove("hidden")
+    }
+  }
+  
+  loginUpdate()
+
+  function cartUpdate() {
+    if(userKey) {
+      fetch("https://api.everrest.educata.dev/shop/cart", {
+        method: "GET",
+        headers: {
+          accept: 'application/json',
+          Authorization: `Bearer ${userKey}`
+        }
+      })
+        .then(res => res.json())
+        .then(data => cartNum.innerText = data.products.length)
+    }else {
+      cartNum.innerText = 0
+    }
+  }
+  
+  cartUpdate()
 
 fetch(`https://api.everrest.educata.dev/shop/products/id/${id}`)
 .then(res => res.json())
@@ -34,11 +76,11 @@ function login() {
 }
 
 let norm1 = 0;
-let images = []
+let imagesList = []
 
 function appear(data) {
-    images = data.images
-    images.unshift(data.thumbnail)
+    imagesList = data.images
+    imagesList.unshift(data.thumbnail)
     productImg.src = data.images[norm1]
     name1.innerText = data.title;
     name2.innerText = data.title;
@@ -60,12 +102,63 @@ function appear(data) {
     releaseDate.innerText = data.issueDate.split("T")[0]
 }
 appear()
+
 function imageSwap(num) {
-    if(norm1 === 0 && num === -1 || norm1 == images.length - 1 && num == +1) {
+    if(norm1 === 0 && num === -1 || norm1 == imagesList.length - 1 && num == +1) {
         norm1
     }else {
         norm1+= num
     }
-    productImg.src = images[norm1]
+    productImg.src = imagesList[norm1]
 }
 
+let hastCart = false;
+
+function addToCart() {
+    if(userKey) {
+      let cardInfo = {
+        id: id,
+        quantity: 1,
+      };
+      fetch("https://api.everrest.educata.dev/auth", {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        Authorization: `Bearer ${userKey}`,
+      },
+      })
+      .then((res) => res.json())
+      .then((data) => {
+          (data.cartID ? (hastCart = true) : hastCart = false)
+          addCartLogic(cardInfo)
+      } );
+    }else {
+      alert("Please log in first to add items to your cart.")
+    }
+  }
+  function addCartLogic(cardInfo) {
+    fetch(`https://api.everrest.educata.dev/shop/products/id/${cardInfo.id}`)
+    .then(res => res.json())
+    .then(data => {
+      if(data.stock > 0) {
+        fetch("https://api.everrest.educata.dev/shop/cart/product", {
+          method: `${hastCart ? "PATCH" : "POST"}`,
+          headers: {
+              accept: "application/json",
+              Authorization: `Bearer ${userKey}`,
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(cardInfo)
+        })
+        .then(res => res.json())
+        .then(data => console.log(data))
+        .catch(err => console.log(err))
+        
+        setTimeout(() => {
+          cartUpdate()
+        }, 1000);
+      }else {
+        
+      }
+    })
+  }

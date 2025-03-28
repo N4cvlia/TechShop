@@ -391,6 +391,9 @@ body {
     color: #333;
     font-size: 16px;
 }
+.hidden {
+    display: none;
+}
 
 .sidebar a:hover {
     color: #0066cc;
@@ -511,6 +514,7 @@ body {
     overflow: hidden;
     box-shadow: 0 10px 30px rgba(0,0,0,0.06);
     transition: all 0.3s ease;
+    
 }
   
 .card:hover {
@@ -984,6 +988,48 @@ body {
     gap: 10px;
     margin-top: 5px;
 }
+.noStock {
+    color: red;
+    font-family: Avenir;
+    font-weight: 600;
+    font-size: 20px;
+    display: flex;
+    justify-self: center;
+    margin-top: 10px;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(255, 255, 255, 0.591);
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s;
+}
+.noStock.Hidden {
+    display: none;
+}
+.yesStock {
+    color: rgb(34, 255, 0);
+    font-family: Avenir;
+    font-weight: 600;
+    font-size: 20px;
+    display: flex;
+    justify-self: center;
+    margin-top: 10px;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(255, 255, 255, 0.591);
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s;
+}
+.yesStock.Hidden {
+    display: none;
+}
 .verify {
     margin-top: 10px;
     font-family: Avenir;
@@ -1009,7 +1055,9 @@ body {
 .register-form-footer a:hover {
     text-decoration: underline;
 }
-
+.disabledButton {
+    background-color: grey;
+}
 @media (max-width: 480px) {
     .login-container {
         width: 90%;
