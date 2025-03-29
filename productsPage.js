@@ -14,6 +14,25 @@ const quantityInput = document.getElementById("quantity-input")
 let userKey = Cookies.get("user");
 let cartNum = document.getElementById("cartNum")
 let loginIcon = document.getElementById('loginIcon')
+let addCartBtn = document.getElementById("add-to-cart")
+let hastCart = false
+
+function goToCart() {
+    window.location.href = "./cart.html"
+  }
+
+fetch(`https://api.everrest.educata.dev/shop/products/id/${id}`)
+.then(res => res.json())
+.then(data => {
+    if(data.stock > 0) {
+        addCartBtn.classList.remove("disabledButton")
+        addCartBtn.disabled = false
+    }else {
+        addCartBtn.classList.add("disabledButton")
+        addCartBtn.disabled = true
+        addCartBtn.innerText = "No Stock"
+    }
+})
 
 function loginUpdate() {
     if(userKey) {
@@ -112,13 +131,13 @@ function imageSwap(num) {
     productImg.src = imagesList[norm1]
 }
 
-let hastCart = false;
+
 
 function addToCart() {
     if(userKey) {
       let cardInfo = {
         id: id,
-        quantity: 1,
+        quantity: quantityInput.value,
       };
       fetch("https://api.everrest.educata.dev/auth", {
       method: "GET",
@@ -135,8 +154,8 @@ function addToCart() {
     }else {
       alert("Please log in first to add items to your cart.")
     }
-  }
-  function addCartLogic(cardInfo) {
+}
+function addCartLogic(cardInfo) {
     fetch(`https://api.everrest.educata.dev/shop/products/id/${cardInfo.id}`)
     .then(res => res.json())
     .then(data => {
@@ -157,8 +176,9 @@ function addToCart() {
         setTimeout(() => {
           cartUpdate()
         }, 1000);
-      }else {
         
+      }else {
+        false
       }
     })
   }

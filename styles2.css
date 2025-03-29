@@ -201,8 +201,7 @@
     color: black;
 }
 .disabledButton {
-    background-color: rgba(128, 128, 128, 0.491) !important; 
-    border: 2px solid rgba(128, 128, 128, 0.491) !important;
+    opacity: 0.5;
 }
 .favorite-button {
     background-color: transparent;

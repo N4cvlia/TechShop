@@ -3,15 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="styles2.css">
+    <title>Cart</title>
     <script src="https://kit.fontawesome.com/909479a55e.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <nav class="header">
         <div class="brand-container">
-            <div class="brand-name"><a href="index.html">TechShop</a></div>
+            <div class="brand-name"><a href="./index.html">TechShop</a></div>
         </div>
         <div class="search-container">
             <input type="text" class="search-input" placeholder="Search...">
@@ -42,76 +41,42 @@
             </button>
         </div>
     </nav>
-    <div class="breadcrumb">
-        <a href="./index.html">Home</a>
-        <span>/</span>
-        <a href="./shop.html">All Products</a>
-        <span class="hate">/</span>
-        <span class="hate" id="name1">Sheer 10.2" Tablet With Wi-Fi, 32GB</span>
-    </div>
-    <div class="product-wrapper">
-        <div class="product-container">
-            <div class="product-image-section">
-                <div class="product-image-gradient"><img src="" alt="" id="productImg" referrerpolicy="no-referrer"></div>
-                <div class="image-navigation">
-                    <button class="nav-arrow nav-left" onclick="imageSwap(-1)">
-                        <i class="fas fa-chevron-left"></i>
-                    </button>
-                    <button class="nav-arrow nav-right" onclick="imageSwap(+1)">
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="product-details">
-                <div class="product-header">
-                    <h1 class="product-title" id="name2">Sheer 10.2" Tablet With Wi-Fi, 32GB</h1>
-                </div>
-                <div class="releaseBrand">
-                    <span class="ReleaseDate">Release Date: <span id="releaseDate">07/25/2025</span></span>
-                    <span class="Brand">Brand: <span id="brand">Asus</span></span>
-                </div>
-                
-                <div class="rating-container">
-                    <div class="rating-stars" id="stars">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <span id="rating">5</span>
-                </div>
-                <div class="price-stock-container">
-                    <div class="price" id="price">$85.00</div>
-                </div>
-                <div class="stock-info" id="stock-info">
-                    <i class="fas fa-check-circle stock-icon" id="checkIcon"></i>
-                    <i class="fa-solid fa-circle-xmark" id="xIcon"></i>
-                    <span id="stock"></span>
-                </div>
-                <div class="quantity-container">
-                    <span class="quantity-label">Quantity</span>
-                    <div class="quantity-control">
-                        <button class="quantity-button" onclick="quantityBtn(-1)">-</button>
-                        <input type="text" value="1" min="0" class="quantity-input" id="quantity-input">
-                        <button class="quantity-button" onclick="quantityBtn(+1)">+</button>
-                    </div>
-                </div>
-                
-                <div class="action-buttons">
-                    <button id="add-to-cart" class="disabledButton" onclick="addToCart()">Add to Cart</button>
-                    <button class="favorite-button">
-                        <i class="far fa-star"></i>
-                    </button>
-                </div>
+    <div class="sc_container">
+        <h1 class="sc_title">Your Cart (<span id="cartItemCount">4</span> items)</h1>
+        
+        <table class="sc_cart_table"> 
+            <thead>
+                <tr>
+                    <th class="item-header">Item</th>
+                    <th class="price-header">Price</th>
+                    <th style="text-align: center;" class="reviews-header">Reviews</th>
+                    <th style="text-align: center;" class="quantity-header">Quantity</th>
+                    <th class="total-header">Total</th>
+                </tr>
+            </thead>
+            <tbody class="cart-card" id="sc_cart_table"></tbody>
+            
+        </table>
+        
+        <div class="sc_cart_totals">
+            <div class="sc_totals_row sc_grand_total">
+                <div class="sc_totals_label">Grand total:</div>
+                <div class="sc_totals_value" id="totalAmount">$0</div>
             </div>
         </div>
-        <div class="product-info-section">
-            <h2 class="product-info-title">Product Information</h2>
-            <p class="product-info-content" id="product-info-content">
-                Discover the Sheer 10.2" Tablet, a sleek and powerful device designed to enhance your digital experience. Featuring a vibrant 10.2-inch display, this tablet offers crisp visuals and responsive touch interactions. With 32GB of storage, you'll have ample space for your apps, photos, and documents. The built-in Wi-Fi ensures you stay connected wherever you go, making browsing, streaming, and communication effortless.
-            </p>
+        
+        <div class="sc_shipping_message">
+            <div>
+                Congrats, you're eligible for <span class="sc_free_shipping">Free Shipping</span>
+            </div>
+            <div class="sc_shipping_icon">🚚</div>
         </div>
+        
+        <div class="sc_checkout_progress">
+            <div class="sc_progress_bar"></div>
+        </div>
+        
+        <button class="sc_checkout_btn" onclick="checkOut()">Check out</button>
     </div>
     <footer class="footer">
         <div class="footer-content">
@@ -174,6 +139,6 @@
         © 2035 by TechShop. Powered and secured by Nacvlia
     </div>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
-    <script src="productsPage.js"></script>
+    <script src="cart.js"></script>
 </body>
 </html>

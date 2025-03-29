@@ -1055,8 +1055,268 @@ body {
 .register-form-footer a:hover {
     text-decoration: underline;
 }
-.disabledButton {
-    background-color: grey;
+.sc_container {
+    max-width: 1100px;
+    margin: 95px auto 50px auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.sc_title {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #333;
+    font-weight: bold;
+    font-size: 28px;
+}
+
+.sc_cart_table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.sc_cart_table th {
+    text-align: left;
+    padding: 15px 10px;
+    border-bottom: 1px solid #e0e0e0;
+    font-weight: bold;
+    color: #333;
+}
+
+.sc_cart_table td {
+    padding: 20px 10px;
+    border-bottom: 1px solid #e0e0e0;
+    vertical-align: middle;
+}
+
+.sc_product {
+    display: flex;
+    align-items: center;
+}
+
+.sc_product_image {
+    width: 80px;
+    margin-right: 20px;
+}
+
+.sc_product_image img {
+    width: 100%;
+    height: auto;
+}
+
+.sc_product_details h2 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+    margin-top: 0;
+}
+
+.sc_ship_date {
+    color: #ff6600;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.sc_fuel_source {
+    color: #777;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.sc_change_link {
+    color: #999;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.sc_change_link:hover {
+    text-decoration: underline;
+}
+.sc_reviews {
+    text-align: center;
+}
+.sc_price, .sc_total, .sc_stock, .sc_rating, .sc_reviews, .sc_price1, .sc_price2 {
+    font-weight: bold;
+    font-size: 16px;
+}
+.rating-cart span,
+.stock-cart span,
+.reviews-cart span{
+    font-family: Avenir;
+    font-weight: 500;
+}
+.reviews-cart {
+    display: none;
+}
+.total-x {
+    display: table-cell;
+    height: 100%;
+}
+.stock-cart,
+.rating-cart {
+    margin-top: 5px;
+}
+.sc_quantity1,
+.sc_quantity2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid black;
+    width: 110px;
+    justify-self: center;
+}
+
+.sc_quantity_input {
+    width: 50px;
+    height: 30px;
+    text-align: center;
+    border: none;
+    
+}
+
+.sc_quantity_btn {
+    width: 30px;
+    height: 30px;
+    background: white;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+}
+
+.sc_quantity_btn:hover {
+    background: #f5f5f5;
+}
+
+.sc_remove_btn {
+    color: #999;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 19px;
+    margin-left: 10px;
+}
+
+.sc_add_protection {
+    display: inline-block;
+    background-color: #fff;
+    border: 1px solid #ff6600;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 12px;
+    color: #ff6600;
+    margin-top: 10px;
+}
+
+.sc_cart_totals {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.sc_totals_row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+}
+
+.sc_totals_label {
+    font-weight: bold;
+}
+
+.sc_grand_total {
+    font-size: 24px;
+    font-weight: bold;
+    padding: 15px 0;
+    border-top: 1px solid #e0e0e0;
+    margin-top: 10px;
+}
+
+.sc_coupon_code {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-top: 1px solid #e0e0e0;
+}
+
+.sc_add_coupon_btn {
+    color: #666;
+    text-decoration: none;
+}
+
+.sc_add_coupon_btn:hover {
+    text-decoration: underline;
+}
+
+.sc_shipping_message {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f8f8f8;
+    border-radius: 4px;
+}
+
+.sc_shipping_icon {
+    margin-left: 10px;
+}
+
+.sc_free_shipping {
+    font-weight: bold;
+}
+
+.sc_checkout_progress {
+    height: 4px;
+    background: #e0e0e0;
+    margin: 20px 0;
+    border-radius: 2px;
+}
+
+.sc_progress_bar {
+    height: 100%;
+    width: 100%;
+    background-color: #32cd32;
+    border-radius: 2px;
+}
+
+.sc_checkout_btn {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    background-color: #000;
+    color: white;
+    font-weight: 600;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 20px;
+    font-family: Avenir;
+    border: 2px solid black;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.sc_checkout_btn:hover {
+    background-color: white;
+    color: black;
+}
+
+.sc_no_quantity {
+    height: 2px;
+    background-color: #777;
+    width: 100px;
+    margin: 0 auto;
+}
+.sc_quantity1,
+.sc_price1 {
+    display: none;
 }
 @media (max-width: 480px) {
     .login-container {
@@ -1199,6 +1459,51 @@ body {
     .login-container {
         margin: 220px auto 80px auto;
     }
+    .sc_container {
+        margin-top: 160px;
+        width: 100%;
+        border-radius: 0px;
+        padding: 20px 5px;
+    }
+    .total-header,
+    .total-x,
+    .reviews-header,
+    .sc_reviews,
+    .quantity-header,
+    .price-header,
+    .item-header,
+    .sc_price2,
+    .sc_quantity2,
+    .sc-quantity2-container {
+        display: none;
+    }
+    .reviews-cart,
+    .sc_price1 {
+        display: inline;
+    }
+    .sc_quantity1 {
+        display: flex;
+    }
+    .sc_product_details {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+    .sc_product_image {
+        width: 100px;
+    }
+    .sc_price_quantity {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .sc_price1 {
+        font-size: 19px;
+    }
+    .stock-cart {
+        display: flex;
+        justify-content: space-between;
+    }
 }
 @media screen and (max-width: 477px) {
     .section2-box {
@@ -1211,6 +1516,12 @@ body {
         font-size: 16px;
     }
 }
+@media screen and (max-width: 370px) {
+    .sc_product_image {
+        width: 50px;
+    }
+}
+
 @media screen and (max-width: 375px) {
     .search-container {
         padding: 0px;

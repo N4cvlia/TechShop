@@ -22,6 +22,11 @@ let userKey = Cookies.get("user");
 let cartNum = document.getElementById("cartNum")
 let loginIcon = document.getElementById('loginIcon')
 
+
+function goToCart() {
+  window.location.href = "./cart.html"
+}
+
 function loginUpdate() {
   if(userKey) {
     loginIcon.classList.add("hidden")
