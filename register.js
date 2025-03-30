@@ -3,7 +3,7 @@ const searchInput = document.querySelector('.search-input');
 const searchResults = document.querySelector('.search-results')
 
 function goToLogin() {
-    window.location.href = "./login.html"
+    window.location.href = "./logIn.html"
 }
 
 function register(e) {
@@ -33,8 +33,8 @@ function register(e) {
             errors.innerHTML = `<span class="verify">Verify Your Email!</span>`
             setInterval(() => {
                 errors.innerHTML = ""
-                window.location.href = "./login.html"
-            }, 10000);
+                window.location.href = "./logIn.html"
+            }, 2000);
             e.target.reset()
         }
     })
