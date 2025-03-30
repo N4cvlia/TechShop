@@ -1,6 +1,33 @@
 let userKey = Cookies.get("user");
 let cartNum = document.getElementById("cartNum")
 let loginIcon = document.getElementById('loginIcon')
+let cartExist;
+
+function login() {
+    window.location.href = "./login.html"
+}
+
+function cartExists() {
+    fetch("https://api.everrest.educata.dev/auth", {
+        method: "GET",
+        headers: {
+          accept: "application/json",
+          Authorization: `Bearer ${userKey}`,
+        },
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            if (data.cartID) {
+                cartExist = true
+                totalCal()
+                cartUpdate()
+                getCart()
+            }else {
+                cartExist = false
+            }
+        } );
+}
+cartExists()
 
 function getCart() {
     fetch("https://api.everrest.educata.dev/shop/cart", {
@@ -12,21 +39,34 @@ function getCart() {
       })
         .then(res => res.json())
         .then(data => {
-            updateCartInfo(data)
+            if(data.statusCode !== 409) {
+                updateCartInfo(data)
+            }
         })
+        .catch(err => console.log(err))
 }
 
-function checkOut() {
-    fetch("https://api.everrest.educata.dev/shop/cart/checkout", {
-        method: 'POST',
-        headers: {
-            accept: "*/*",
-            Authorization: `Bearer ${userKey}`
-        }
-    })
-    .then(res => res.json())
-    .then(data => console.log(data))
+function updateTotalItems() {
+    setTimeout(() => {
+        fetch("https://api.everrest.educata.dev/shop/cart", {
+            method: "GET",
+            headers: {
+              accept: 'application/json',
+              Authorization: `Bearer ${userKey}`
+            }
+          })
+            .then(res => res.json())
+            .then(data => {
+                if(data.statusCode !== 409) {
+                    document.getElementById("cartItemCount").innerHTML = data.total.quantity
+                    cartNum.innerText = data.total.quantity
+                }
+            })
+            .catch(err => console.log(err))
+    }, 1000);
+    
 }
+
 
 function totalCal() {
     fetch("https://api.everrest.educata.dev/shop/cart", {
@@ -38,13 +78,18 @@ function totalCal() {
       })
         .then(res => res.json())
         .then(data => {
-            document.getElementById("totalAmount").innerText = `$${data.total.price.current}`
+            if(data.statusCode == 409) {
+                document.getElementById("totalAmount").innerText = `$0`
+            }else {
+                document.getElementById("totalAmount").innerText = `$${data.total.price.current}`
+            }
         })
+        .catch(err => console.log(err))
 }
-totalCal()
+
 
 function updateCartInfo(data) {
-    document.getElementById("cartItemCount").innerText = data.total.quantity
+    updateTotalItems()
     data.products.forEach(product => cartAppear(product.productId, product.quantity))
 }
 
@@ -55,7 +100,6 @@ function cartAppear(id, quantity) {
         document.getElementById("sc_cart_table").innerHTML += appear(data)
     })
     function appear(data) {
-        console.log(data.price.current)
         return `
                 <tr>
                     <td>
@@ -80,7 +124,7 @@ function cartAppear(id, quantity) {
                                     <span class="sc_price1">$${data.price.current}</span>
                                     <div class="sc_quantity1">
                                         <button class="sc_quantity_btn" onclick="decreaseQuantity('${data._id}')">-</button>
-                                        <input type="text" value="${quantity}" min="1" id="quantityInput${data._id}" class="sc_quantity_input">
+                                        <input type="text" value="${quantity}" min="1" id="quantityInput${data._id}1" class="sc_quantity_input">
                                         <button class="sc_quantity_btn" onclick="increaseQuantity('${data._id}')">+</button>
                                     </div>
                                 </div>
@@ -92,7 +136,7 @@ function cartAppear(id, quantity) {
                     <td class="sc-quantity2-container">
                         <div class="sc_quantity2">
                             <button class="sc_quantity_btn" onclick="decreaseQuantity('${data._id}')">-</button>
-                            <input type="text" value="${quantity}" min="1" id="quantityInput${data._id}" class="sc_quantity_input">
+                            <input type="text" value="${quantity}" min="1" id="quantityInput${data._id}2" class="sc_quantity_input">
                             <button class="sc_quantity_btn" onclick="increaseQuantity('${data._id}')">+</button>
                         </div>
                     </td>
@@ -107,7 +151,7 @@ function cartAppear(id, quantity) {
     
 }
 
-getCart()
+
 
 function cartRemoval(id, e) {
     e.target.parentElement.parentElement.remove()
@@ -124,7 +168,11 @@ function cartRemoval(id, e) {
         body: JSON.stringify(trash)
     })
     .then(res => res.json())
-    .then(data => totalCal())
+    .then(data => {
+        totalCal()
+        cartUpdate()
+        updateTotalItems()
+    })
 }
 
 function decreaseQuantity(id) {
@@ -159,8 +207,11 @@ function decreaseQuantity(id) {
                   .then(res => res.json())
                   .then(data => totalCal())
                   .catch(err => console.log(err))
+                  updateTotalItems()
+                  
             }
-            document.getElementById(`quantityInput${id}`).value = quantity
+            document.getElementById(`quantityInput${id}1`).value = quantity
+            document.getElementById(`quantityInput${id}2`).value = quantity
             document.getElementById(`price${id}`).innerText = quantity * array1[0].pricePerQuantity
             
         })
@@ -200,8 +251,11 @@ function increaseQuantity(id) {
                       .then(res => res.json())
                       .then(data => totalCal())
                       .catch(err => console.log(err))
+                      updateTotalItems()
+                      
                 }
-                document.getElementById(`quantityInput${id}`).value = quantity
+                document.getElementById(`quantityInput${id}1`).value = quantity
+                document.getElementById(`quantityInput${id}2`).value = quantity
                 document.getElementById(`price${id}`).innerText = quantity * array1[0].pricePerQuantity
             })
             
@@ -242,11 +296,30 @@ function loginUpdate() {
         }
       })
         .then(res => res.json())
-        .then(data => cartNum.innerText = data.products.length)
+        .then(data => cartNum.innerText = data.total.quantity)
     }else {
       cartNum.innerText = 0
     }
   }
   
-  cartUpdate()
 
+  function checkOut() {
+    fetch("https://api.everrest.educata.dev/shop/cart/checkout", {
+        method: 'POST',
+        headers: {
+            accept: "*/*",
+            Authorization: `Bearer ${userKey}`
+        }
+    })
+    .then(res => res.json())
+    .then(data => console.log(data))
+    document.getElementById("sc_cart_table").innerHTML = ""
+    document.getElementById("totalAmount").innerText = `$0`
+    document.getElementById("cartItemCount").innerHTML = 0
+    cartNum.innerText = 0
+    setTimeout(() => {
+        window.location.href = "./shop.html"
+        alert("Succesfully checked out!")
+    }, 2000);
+    
+}

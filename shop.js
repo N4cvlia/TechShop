@@ -21,7 +21,28 @@ const allButton = document.getElementById("allButton")
 let userKey = Cookies.get("user");
 let cartNum = document.getElementById("cartNum")
 let loginIcon = document.getElementById('loginIcon')
+let cartExist;
+let minMaxPriceBoolean = false;
 
+function cartExists() {
+  fetch("https://api.everrest.educata.dev/auth", {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        Authorization: `Bearer ${userKey}`,
+      },
+      })
+      .then((res) => res.json())
+      .then((data) => {
+          if (data.cartID) {
+              cartExist = true
+              cartUpdate()
+          }else {
+              cartExist = false
+          }
+      } );
+}
+cartExists()
 
 function goToCart() {
   window.location.href = "./cart.html"
@@ -58,13 +79,11 @@ function cartUpdate() {
       }
     })
       .then(res => res.json())
-      .then(data => cartNum.innerText = data.products.length)
+      .then(data => cartNum.innerText = data.total.quantity)
   }else {
     cartNum.innerText = 0
   }
 }
-
-cartUpdate()
 
 function goHome() {
     window.location.href = "./index.html"
@@ -76,10 +95,16 @@ function allClick() {
   appearAll(1)
   allBoolean = true
 }
+function removeDisability() {
+  document.getElementById("sortBy1").disabled = false
+  allBoolean = true
+}
   
 function ratingFilter(num) {
   productsContainer.innerHTML = "";
   paginationContainer.classList.add("hidden")
+  minMaxPriceBoolean = false
+  document.getElementById("sortBy1").disabled = true
   fetch(`https://api.everrest.educata.dev/shop/products/all?page_index=1&page_size=40`)
   .then(data => data.json())
   .then(data => {
@@ -98,7 +123,10 @@ function minMaxPriceFilter() {
   productsContainer.innerHTML = "";
   paginationContainer.classList.add("hidden")
   chosenCategoryNum = 0;
-  allBoolean = true;
+  chosenBrand = ""
+  minMaxPriceBoolean = true
+  document.getElementById("sortBy1").disabled = false
+  allBoolean = false;
   fetch(`https://api.everrest.educata.dev/shop/products/search?page_index=1&page_size=40&price_min=${rangeMin.value}&price_max=${rangeMax.value}`)
   .then(data => data.json())
   .then(data => {
@@ -127,13 +155,21 @@ fetch("https://api.everrest.educata.dev/shop/products/categories")
 
 let chosenCategoryNum;
 let chosenCategory;
+let chosenBrand;
 
 function categoryAppear(cate,num) {
   productsContainer.innerHTML = ""
   paginationContainer.classList.add("hidden")
   chosenCategoryNum = num
   chosenCategory = cate
+  document.getElementById("sortBy1").disabled = false
+  if(cate == "brand") {
+    chosenBrand = num
+  }else if(cate == "category") {
+    chosenBrand = ""
+  }
   allBoolean = false;
+  minMaxPriceBoolean = false;
   fetch(`https://api.everrest.educata.dev/shop/products/${cate}/${num}?page_index=1&page_size=30`)
   .then(data => data.json())
   .then(data => {
@@ -246,7 +282,7 @@ function addCartLogic(cardInfo) {
         body: JSON.stringify(cardInfo)
       })
       .then(res => res.json())
-      .then(data => console.log(data))
+      .then(data => data)
       .catch(err => console.log(err))
       let stock = `yesStock${cardInfo.id}`
         document.getElementById(`${stock}`).classList.remove("Hidden")
@@ -272,7 +308,7 @@ function login() {
 
 let nums = 1
 
-function pages( num) {
+function pages(num) {
   nums = num
   appearAll(nums)
   if (num == 1) {
@@ -373,6 +409,31 @@ function appearSortBy(sortBy, direction) {
   
 }
 
+function appearSortByBrands(sortBy, direction) {
+  productsContainer.innerHTML = ""
+  fetch(`https://api.everrest.educata.dev/shop/products/search?page_index=1&page_size=40&brand=${chosenBrand}&sort_by=${sortBy}&sort_direction=${direction}`)
+  .then(res => res.json())
+  .then(data => {
+    data.products.forEach(data => productsContainer.innerHTML += appear(data))
+    productsIndicator.innerHTML = `Showing 1-${data.total} of ${data.total} products`
+    productCount.innerHTML = `${data.total} products`
+  })
+}
+
+
+function appearSortByPrice(sortBy, direction) {
+  productsContainer.innerHTML = ""
+  let minimumPrice = document.getElementById("input-min").value
+  let maximumPrice = document.getElementById("input-max").value
+
+  fetch(`https://api.everrest.educata.dev/shop/products/search?page_index=1&page_size=40&price_min=${minimumPrice}&price_max=${maximumPrice}&sort_by=${sortBy}&sort_direction=${direction}`)
+  .then(res => res.json())
+  .then(data => {
+    data.products.forEach(data => productsContainer.innerHTML += appear(data))
+    productsIndicator.innerHTML = `Showing 1-${data.total} of ${data.total} products`
+    productCount.innerHTML = `${data.total} products`
+  })
+}
 
 sortBy1.addEventListener("change", (e) => {
   switch(e.target.value) {
@@ -381,8 +442,15 @@ sortBy1.addEventListener("change", (e) => {
         chosenCategoryNum = 0;
         appearSortBy("price", "asc")
         paginationContainer.classList.add("hidden")
+        nums = 1
       }else {
-        appearSortBy("price", "asc")
+        if (chosenBrand) {
+          appearSortByBrands("price", "asc")
+        }else if(minMaxPriceBoolean) {
+          appearSortByPrice("price", "asc")
+        }else{
+          appearSortBy("price", "asc")
+        }
         paginationContainer.classList.add("hidden")
       }
       break;
@@ -391,8 +459,15 @@ sortBy1.addEventListener("change", (e) => {
         chosenCategoryNum = 0;
         appearSortBy("price", "desc")
         paginationContainer.classList.add("hidden")
+        nums = 1
       }else {
-        appearSortBy("price", "desc")
+        if (chosenBrand) {
+          appearSortByBrands("price", "desc")
+        }else if(minMaxPriceBoolean) {
+          appearSortByPrice("price", "desc")
+        }else {
+          appearSortBy("price", "desc")
+        }
         paginationContainer.classList.add("hidden")
       }
       break;
@@ -401,8 +476,15 @@ sortBy1.addEventListener("change", (e) => {
         chosenCategoryNum = 0;
         appearSortBy("title", "asc")
         paginationContainer.classList.add("hidden")
+        nums = 1
       }else {
-        appearSortBy("title", "asc")
+        if (chosenBrand) {
+          appearSortByBrands("title", "asc")
+        }else if(minMaxPriceBoolean) {
+          appearSortByPrice("title", "asc")
+        }else {
+          appearSortBy("title", "asc")
+        }
         paginationContainer.classList.add("hidden")
       }
       break;
@@ -411,17 +493,31 @@ sortBy1.addEventListener("change", (e) => {
         chosenCategoryNum = 0;
         appearSortBy("title", "desc")
         paginationContainer.classList.add("hidden")
+        nums = 1
       }else {
-        appearSortBy("title", "desc")
+        if (chosenBrand) {
+          appearSortByBrands("title", "desc")
+        }else if(minMaxPriceBoolean) {
+          appearSortByPrice("title", "desc")
+        }else {
+          appearSortBy("title", "desc")
+        }
         paginationContainer.classList.add("hidden")
       }
       break;
     default:
       if(allBoolean) {
-        appearAll(1)
+        pages(1)
         paginationContainer.classList.remove("hidden")
+        nums = 1
       }else {
-        categoryAppear(chosenCategory,chosenCategoryNum)
+        if (chosenBrand) {
+          categoryAppear('brand', `${chosenBrand}`)
+        }else if(minMaxPriceBoolean) {
+          minMaxPriceFilter()
+        }else {
+          categoryAppear(chosenCategory,chosenCategoryNum)
+        }
         paginationContainer.classList.add("hidden")
       } 
   }

@@ -20,7 +20,6 @@ function login(e) {
     })
     .then(res => res.json())
     .then(data => {
-        console.log(data)
         if(data.statusCode == 400 || data.statusCode == 409){
             data.errorKeys.forEach(error => {
                 errors.innerHTML = `<span id="errors">${error.split(".")[1].split("_").join(" ")}</span>` 

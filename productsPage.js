@@ -16,6 +16,27 @@ let cartNum = document.getElementById("cartNum")
 let loginIcon = document.getElementById('loginIcon')
 let addCartBtn = document.getElementById("add-to-cart")
 let hastCart = false
+let cartExist;
+
+function cartExists() {
+  fetch("https://api.everrest.educata.dev/auth", {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        Authorization: `Bearer ${userKey}`,
+      },
+      })
+      .then((res) => res.json())
+      .then((data) => {
+          if (data.cartID) {
+              cartExist = true
+              cartUpdate()
+          }else {
+              cartExist = false
+          }
+      } );
+}
+cartExists()
 
 function goToCart() {
     window.location.href = "./cart.html"
@@ -57,37 +78,42 @@ function loginUpdate() {
 
   function cartUpdate() {
     if(userKey) {
-      fetch("https://api.everrest.educata.dev/shop/cart", {
-        method: "GET",
-        headers: {
-          accept: 'application/json',
-          Authorization: `Bearer ${userKey}`
-        }
-      })
-        .then(res => res.json())
-        .then(data => cartNum.innerText = data.products.length)
-    }else {
-      cartNum.innerText = 0
-    }
+        fetch("https://api.everrest.educata.dev/shop/cart", {
+          method: "GET",
+          headers: {
+            accept: 'application/json',
+            Authorization: `Bearer ${userKey}`
+          }
+        })
+          .then(res => res.json())
+          .then(data => cartNum.innerText = data.total.quantity)
+      }else {
+        cartNum.innerText = 0
+      }
   }
   
-  cartUpdate()
 
 fetch(`https://api.everrest.educata.dev/shop/products/id/${id}`)
 .then(res => res.json())
 .then(data => {
     appear(data)
-    console.log(data)
 })
 let norm = 1
-function quantityBtn(num) {
-    console.log(norm)
-    if(norm == 1 && num == -1) {
-        false
-    }else {
-        norm+= num
-    }
-    quantityInput.value = norm
+function increaseQuantityBtn() {
+    fetch(`https://api.everrest.educata.dev/shop/products/id/${id}`)
+    .then(res => res.json())
+    .then(data => {
+        if(norm < data.stock) {
+             norm++
+        }
+        quantityInput.value = norm
+    }) 
+}
+function decreaseQuantityBtn() {
+    if(norm > 1) {
+        norm--
+   }
+   quantityInput.value = norm
 }
 
 function login() {
@@ -95,10 +121,10 @@ function login() {
 }
 
 let norm1 = 0;
-let imagesList = []
+let imagesList = [];
 
 function appear(data) {
-    imagesList = data.images
+    imagesList = data.images;
     imagesList.unshift(data.thumbnail)
     productImg.src = data.images[norm1]
     name1.innerText = data.title;
@@ -120,7 +146,7 @@ function appear(data) {
     brand.innerText = data.brand[0].toUpperCase() + data.brand.slice(1)
     releaseDate.innerText = data.issueDate.split("T")[0]
 }
-appear()
+
 
 function imageSwap(num) {
     if(norm1 === 0 && num === -1 || norm1 == imagesList.length - 1 && num == +1) {
@@ -173,6 +199,8 @@ function addCartLogic(cardInfo) {
         .then(data => console.log(data))
         .catch(err => console.log(err))
         
+        
+
         setTimeout(() => {
           cartUpdate()
         }, 1000);

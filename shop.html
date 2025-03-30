@@ -81,11 +81,11 @@
                         <div class="price-input">
                             <div class="field min">
                                 <label>Min</label>
-                                <input type="number" class="input-min" value="750" min="0" max="8000">
+                                <input type="number" class="input-min" value="750" min="1" max="8000" id="input-min">
                             </div>
                             <div class="field max">
                                 <label>Max</label>
-                                <input type="number" class="input-max" value="6250" min="0" max="8000">
+                                <input type="number" class="input-max" value="6250" min="1" max="8000" id="input-max">
                             </div>
                         </div>
                         
@@ -110,7 +110,7 @@
                 </button>
                 <div id="siderbar-menus">
                     <div class="rating-container">
-                        <input type="radio" id="rating-radio1" name="box" checked  onclick="appearAll(1); resetSortBy()">
+                        <input type="radio" id="rating-radio1" name="box" checked  onclick="pages(1); resetSortBy(); removeDisability()">
                         <label for="rating-radio1">select all</label>
                     </div>
                     <div class="rating-container">

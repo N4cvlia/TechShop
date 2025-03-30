@@ -2,6 +2,27 @@ const bannerImage = document.getElementById("banner-image")
 let userKey = Cookies.get("user");
 let cartNum = document.getElementById("cartNum")
 let loginIcon = document.getElementById('loginIcon')
+let cartExist;
+
+function cartExists() {
+  fetch("https://api.everrest.educata.dev/auth", {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        Authorization: `Bearer ${userKey}`,
+      },
+      })
+      .then((res) => res.json())
+      .then((data) => {
+          if (data.cartID) {
+              cartExist = true
+              cartUpdate()
+          }else {
+              cartExist = false
+          }
+      } );
+}
+cartExists()
 
 function goToCart() {
     window.location.href = "./cart.html"
@@ -45,18 +66,17 @@ function loginUpdate() {
 
   function cartUpdate() {
     if(userKey) {
-      fetch("https://api.everrest.educata.dev/shop/cart", {
-        method: "GET",
-        headers: {
-          accept: 'application/json',
-          Authorization: `Bearer ${userKey}`
-        }
-      })
-        .then(res => res.json())
-        .then(data => cartNum.innerText = data.products.length)
-    }else {
-      cartNum.innerText = 0
-    }
+        fetch("https://api.everrest.educata.dev/shop/cart", {
+          method: "GET",
+          headers: {
+            accept: 'application/json',
+            Authorization: `Bearer ${userKey}`
+          }
+        })
+          .then(res => res.json())
+          .then(data => cartNum.innerText = data.total.quantity)
+      }else {
+        cartNum.innerText = 0
+      }
   }
   
-  cartUpdate()
