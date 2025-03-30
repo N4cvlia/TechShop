@@ -2,6 +2,22 @@ let userKey = Cookies.get("user");
 let cartNum = document.getElementById("cartNum")
 let loginIcon = document.getElementById('loginIcon')
 let cartExist;
+let auth = sessionStorage.getItem("auth")
+const searchInput = document.querySelector('.search-input');
+const searchResults = document.querySelector('.search-results')
+
+if (userKey) {
+    sessionStorage.setItem("auth", true)
+  }else {
+    sessionStorage.setItem("auth", false)
+}
+
+function checkAuth() {
+  if(auth == "true") {
+    cartExists()
+  }
+}
+checkAuth()
 
 function login() {
     window.location.href = "./login.html"
@@ -27,7 +43,6 @@ function cartExists() {
             }
         } );
 }
-cartExists()
 
 function getCart() {
     fetch("https://api.everrest.educata.dev/shop/cart", {
@@ -304,22 +319,101 @@ function loginUpdate() {
   
 
   function checkOut() {
-    fetch("https://api.everrest.educata.dev/shop/cart/checkout", {
-        method: 'POST',
-        headers: {
-            accept: "*/*",
-            Authorization: `Bearer ${userKey}`
-        }
-    })
-    .then(res => res.json())
-    .then(data => console.log(data))
-    document.getElementById("sc_cart_table").innerHTML = ""
-    document.getElementById("totalAmount").innerText = `$0`
-    document.getElementById("cartItemCount").innerHTML = 0
-    cartNum.innerText = 0
-    setTimeout(() => {
-        window.location.href = "./shop.html"
-        alert("Succesfully checked out!")
-    }, 2000);
-    
+    if(userKey) {
+        fetch("https://api.everrest.educata.dev/shop/cart/checkout", {
+            method: 'POST',
+            headers: {
+                accept: "*/*",
+                Authorization: `Bearer ${userKey}`
+            }
+        })
+        .then(res => res.json())
+        .then(data => data)
+        document.getElementById("sc_cart_table").innerHTML = ""
+        document.getElementById("totalAmount").innerText = `$0`
+        document.getElementById("cartItemCount").innerHTML = 0
+        cartNum.innerText = 0
+        setTimeout(() => {
+            window.location.href = "./shop.html"
+            alert("Succesfully checked out!")
+        }, 2000);
+    }else {
+        alert("Please log in first to check out your cart.")
+    }
 }
+let filteredInfo;
+
+async function filterProducts(query) {
+  if (!query) return [];
+  
+  query = query.toLowerCase();
+try {
+  const response = await fetch("https://api.everrest.educata.dev/shop/products/all?page_index=1&page_size=40")
+  const data = await response.json()
+  filteredInfo = data.products.filter(product => product.title.toLowerCase().includes(query))
+  return filteredInfo
+}catch (error) {
+  console.error('Error fetching products:', error);
+  return [];
+}}
+
+function renderResults(results) {
+  searchResults.innerHTML = '';
+
+  if (results.length === 0) {
+    searchResults.innerHTML = '<div class="no-results-found">No products found</div>';
+    return;
+  }
+  
+  results.forEach(product => {
+    const productElement = document.createElement('div');
+    productElement.className = 'product-item';
+    productElement.innerHTML = `
+      <img class="product-image" src="${product.thumbnail}"></img>
+      <div class="product-info">
+        <h3 class="product-name">${product.title}</h3>
+        <p class="product-price">$${product.price.current}</p>
+      </div>
+    `;
+    
+    productElement.addEventListener('click', () => {
+      searchInput.value = product.title;
+      searchResults.style.display = 'none';
+      goToPage(`${product._id}`)
+    });
+    
+    searchResults.appendChild(productElement);
+  })
+}
+
+searchInput.addEventListener('input', () => {
+  const query = searchInput.value.trim();
+  
+  if (query === '') {
+    searchResults.style.display = 'none';
+  } else {
+    filterProducts(query)
+    .then( result => {
+      renderResults(result)
+    })
+    ;
+    searchResults.style.display = 'block';
+  }
+});
+
+document.addEventListener('click', (event) => {
+  if (!searchInput.contains(event.target) && !searchResults.contains(event.target)) {
+    searchResults.style.display = 'none';
+  }
+});
+
+searchInput.addEventListener('click', (event) => {
+  if (searchInput.value.trim() !== '') {
+    searchResults.style.display = 'block';
+  }
+  event.stopPropagation();
+})
+function goToPage(id) {
+    window.location.href = "./productPage.html"
+    sessionStorage.setItem("Product-Id", id)
+  }
