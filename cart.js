@@ -5,6 +5,32 @@ let cartExist;
 let auth = sessionStorage.getItem("auth")
 const searchInput = document.querySelector('.search-input');
 const searchResults = document.querySelector('.search-results')
+const customPopupMenu = document.getElementById('customPopupMenu');
+const customLogoutBtn = document.getElementById('customLogoutBtn')
+const loginIconImage = document.getElementById("customUserMenuBtn")
+
+
+loginIconImage.addEventListener('click', function(e) {
+  e.stopPropagation();
+  if (customPopupMenu.style.display === 'block') {
+    customPopupMenu.style.display = 'none';
+  } else {
+    customPopupMenu.style.display = 'block';
+  }
+})
+document.addEventListener('click', function(e) {
+  if (e.target !== loginIconImage && e.target !== customPopupMenu) {
+    customPopupMenu.style.display = 'none';
+  }
+});
+customLogoutBtn.addEventListener('click', function() {
+  customPopupMenu.style.display = 'none';
+  Cookies.set("user", "")
+  sessionStorage.setItem("auth", false)
+  setTimeout(() => {
+    window.location.reload();
+  }, 2000);
+});
 
 if (userKey) {
     sessionStorage.setItem("auth", true)

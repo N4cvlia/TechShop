@@ -29,7 +29,12 @@
                 <span>Log In</span>
             </button>
             <button class="nav-button">
-                <img src="https://www.ledr.com/colours/white.jpg" alt="" id="loginImage" class="user-icon hidden" style="border-radius: 50%; height: 30px; width: 30px;">
+                    <button id="customUserMenuBtn" class="custom_user_menu_btn_v1">
+                        <img src="https://www.ledr.com/colours/white.jpg" alt="" id="loginImage" class="user-icon hidden" style="border-radius: 50%; height: 30px; width: 30px;">
+                    </button>
+                    <div id="customPopupMenu" class="custom_popup_menu_v1">
+                        <button id="customLogoutBtn" class="custom_logout_btn_v1">Log out</button>
+                    </div>
             </button>
             <button class="nav-button" onclick="goToCart()">
                 <svg class="cart-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -137,11 +142,7 @@
                 </div>
             </div>
             <div class="filter-option" id="Hidden">
-                <button class="filter-header" onclick="menuClick(4)">
-                    <h3>Sort by</h3>
-                    <span class="filter-icon">+</span>
-                    <span class="filter-icon1">—</span>
-                </button>
+                
                 <div id="siderbar-menus">
                     <div class="rating-container">
                         <input type="radio" id="sortBy-radio1" name="box1" checked>
