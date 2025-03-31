@@ -25,19 +25,19 @@ function login(e) {
         if(data.statusCode == 400 || data.statusCode == 409){
             data.errorKeys.forEach(error => {
                 errors.innerHTML = `<span id="errors">${error.split(".")[1].split("_").join(" ")}</span>` 
-                setInterval(() => {
+                setTimeout(() => {
                     errors.innerHTML = ""
                 }, 10000);
             })
         }else {
             errors.innerHTML = `<span class="verify">Logged in succesfully!</span>`
-            setInterval(() => {
-                errors.innerHTML = ""
-                window.location.href = "./shop.html"
-            }, 2);
             e.target.reset()
             Cookies.set("user", data.access_token)
             sessionStorage.setItem("auth", true)
+            setTimeout(() => {
+                errors.innerHTML = ""
+                window.location.href = "./shop.html"
+            }, 2000);
         }
     })
     .catch(err => console.log(err))
@@ -62,7 +62,7 @@ try {
 
 function renderResults(results) {
   searchResults.innerHTML = '';
-  
+
   if (results.length === 0) {
     searchResults.innerHTML = '<div class="no-results-found">No products found</div>';
     return;
