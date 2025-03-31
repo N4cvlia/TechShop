@@ -46,7 +46,7 @@ function checkAuth() {
 checkAuth()
 
 function login() {
-    window.location.href = "./login.html"
+    window.location.href = "./logIn.html"
 }
 
 function cartExists() {
